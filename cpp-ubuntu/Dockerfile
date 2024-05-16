@@ -1,0 +1,11 @@
+# syntax=docker/dockerfile:1
+FROM ubuntu:jammy-20240405
+MAINTAINER Maximilian Wende <maximilian.wende@freiberginstruments.com>
+LABEL Description="Ubuntu-based C++ build environment (gcc, cmake, cppcheck, gcovr, doxygen)"
+ADD Dockerfile /
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
+RUN apt-get update
+RUN apt-get install -y build-essential cmake cppcheck gcovr doxygen
