@@ -1,0 +1,10 @@
+# syntax=docker/dockerfile:1
+FROM dasisdormax/cpp-ubuntu:jammy-1.1@sha256:d884f349e3fb5dbb03e4d242df5e2494ac657a02af79b508f8534e569912eaf8
+MAINTAINER Maximilian Wende <maximilian.wende@freiberginstruments.com>
+LABEL Description="Ubuntu-based C++ build environment (gcc, cmake, cppcheck, gcovr, doxygen)"
+ADD Dockerfile /
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
+RUN apt-get install -y ninja-build
