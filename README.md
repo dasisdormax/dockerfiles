@@ -16,25 +16,33 @@ cd cpp-ubuntu
 docker build -f Dockerfile.noble-1 -t dasisdormax/cpp-ubuntu:noble-1 .
 docker images --digests
 docker image tag 4e436fca6e0e dasisdormax/cpp-ubuntu:latest
-docker push -a dasisdormax/cpp-ubuntu
+docker push dasisdormax/cpp-ubuntu:noble-1    # do not use -a
+docker push dasisdormax/cpp-ubuntu:latest     # do not use -a
 ~~~
 
-## Testing
+## Local Testing with Gitlab Runners
+
+Setup local runner:
 
 ~~~.sh
 docker pull gitlab/gitlab-runner
+
+# Create test repository and a local runner in Gitlab Web UI.
+# Make sure to use the correct tags and disable instance runners.
+#
 # Paste gitlab-runner register command
 # Use docker executor and default image (ruby:3.3)
-gitlab-runner run
 ~~~
 
-Alternative setup (untested)
+Configure to use local images by editing ~/.gitlab-runner/config.toml ...
 
-~~~.sh
-docker pull gitlab/gitlab-runner
-docker volume create gitlab-runner-config
-docker run -d --name gitlab-runner --restart always \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v gitlab-runner-config:/etc/gitlab-runner \
-  gitlab/gitlab-runner:latest
 ~~~
+[[runners]]
+  [runners.docker]
+    pull_policy = "if-not-present"
+    allowed_pull_policies = ["always", "if-not-present"]
+~~~
+
+Start your local runner with `gitlab-runner run` and start your pipeline.
+~~~
+
